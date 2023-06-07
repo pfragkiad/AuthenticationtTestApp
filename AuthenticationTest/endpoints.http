@@ -1,0 +1,11 @@
+﻿@rootUrl=https://localhost:7018
+
+GET {{rootUrl}}/username
+
+###
+
+GET {{rootUrl}}/login
+Content-Type: application/json
+
+###
+
