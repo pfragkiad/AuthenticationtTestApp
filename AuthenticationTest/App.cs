@@ -13,6 +13,30 @@ public static class App
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddCookieAuthentication();
+        builder.Services.AddAuthorization(builder =>
+        {
+            builder.AddPolicy("auth",pb=>
+            {
+                pb.RequireAuthenticatedUser()
+                  .AddAuthenticationSchemes(
+                    ApiEndpoints.AuthScheme, ApiEndpoints.AuthScheme2  );
+          });
+
+            builder.AddPolicy("eu passport", pb =>
+            {
+                pb.RequireAuthenticatedUser()
+                .AddAuthenticationSchemes(ApiEndpoints.AuthScheme)
+                .RequireClaim("passport", "eu");
+            });
+
+            builder.AddPolicy("asia passport", pb =>
+            {
+                pb.RequireAuthenticatedUser()
+                .AddAuthenticationSchemes(ApiEndpoints.AuthScheme2)
+                .RequireClaim("passport", "asia");
+            });
+        }); //build policies
+
 
         //builder.Services.AddDataProtection();
         //builder.Services.AddHttpContextAccessor();
@@ -43,6 +67,19 @@ public static class App
         //});
 
         app.UseAuthentication(); //add middleware!
+        app.UseAuthorization();
+
+        //app.Use((context, next) => //authorization middleware
+        //{
+        //    if (context.Request.Path.StartsWithSegments("/login"))
+        //        return next();
+
+        //    if (!context.User.Identities.Any(x => x.AuthenticationType == ApiEndpoints.AuthScheme))
+        //        return Task.FromResult(Results.Unauthorized()); //401
+
+
+        //    return next();
+        //});
 
         app.AddEndpoints();
 
