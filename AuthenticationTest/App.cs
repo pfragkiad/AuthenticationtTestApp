@@ -12,7 +12,7 @@ public static class App
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        //builder.Services.AddCookieAuthentication();
+        builder.Services.AddCookieAuthentication();
 
         //builder.Services.AddDataProtection();
         //builder.Services.AddHttpContextAccessor();
@@ -42,7 +42,7 @@ public static class App
         //    return next();
         //});
 
-        app.UseAuthentication(); //equivalent middleware
+        app.UseAuthentication(); //add middleware!
 
         app.AddEndpoints();
 
